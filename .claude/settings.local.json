@@ -1,11 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\wetil\\\\OneDrive\\\\Desktop\\\\JScar\" -Recurse -File)",
-      "Bash(Select-Object -ExpandProperty FullName)",
-      "Bash(Sort-Object)",
-      "Bash(find \"/mnt/c/Users/wetil/OneDrive/Documentos/Obsidian/CerebroClaude\" -type f -name \"*.md\" | sort 2>/dev/null || echo \"PATH NOT FOUND VIA BASH\")",
-      "Read(//mnt/c/Users/wetil/OneDrive/Documentos/Obsidian/**)"
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }
