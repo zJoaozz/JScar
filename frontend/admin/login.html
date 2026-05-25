@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — JScar Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body class="login-body">
+
+  <div class="login-wrapper">
+    <div class="login-card">
+
+      <!-- Logo -->
+      <a href="../index.html" class="login-logo brand" aria-label="JScar Veiculos">
+        <img src="../imagens/jscar-logo.png" alt="JScar Veiculos" class="brand-logo">
+      </a>
+
+      <!-- Setup form (primeiro acesso) -->
+      <div id="setupForm" style="display:none">
+        <h2 class="login-title">Criar conta admin</h2>
+        <p class="login-sub">Nenhum administrador encontrado. Configure o primeiro acesso.</p>
+        <div id="setupError" class="login-error" style="display:none"></div>
+        <div class="form-group">
+          <label for="setupNome">Nome</label>
+          <input type="text" id="setupNome" placeholder="Seu nome" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="setupEmail">Email</label>
+          <input type="email" id="setupEmail" placeholder="admin@jscar.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="setupPassword">Senha</label>
+          <div class="input-icon-right">
+            <input type="password" id="setupPassword" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+            <button type="button" class="toggle-pw" data-target="setupPassword" aria-label="Mostrar senha">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="setupConfirmPassword">Confirmar senha</label>
+          <input type="password" id="setupConfirmPassword" placeholder="Repita a senha" autocomplete="new-password">
+        </div>
+        <button id="setupBtn" class="btn-login">
+          <span class="btn-text">Criar conta</span>
+          <span class="btn-spinner" style="display:none"><i class="bi bi-arrow-repeat spin"></i></span>
+        </button>
+      </div>
+
+      <!-- Login form -->
+      <div id="loginForm" style="display:none">
+        <h2 class="login-title">Entrar</h2>
+        <p class="login-sub">Acesso restrito a administradores.</p>
+        <div id="loginError" class="login-error" style="display:none"></div>
+        <div class="form-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="admin@jscar.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Senha</label>
+          <div class="input-icon-right">
+            <input type="password" id="loginPassword" placeholder="Sua senha" autocomplete="current-password">
+            <button type="button" class="toggle-pw" data-target="loginPassword" aria-label="Mostrar senha">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+        </div>
+        <button id="loginBtn" class="btn-login">
+          <span class="btn-text">Entrar</span>
+          <span class="btn-spinner" style="display:none"><i class="bi bi-arrow-repeat spin"></i></span>
+        </button>
+      </div>
+
+      <!-- Loading state -->
+      <div id="loadingState" class="login-loading">
+        <i class="bi bi-arrow-repeat spin"></i>
+        <span>Verificando...</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>

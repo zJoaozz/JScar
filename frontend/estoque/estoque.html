@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Estoque JScar — Seminovos com procedência em Teresina–PI. Filtre por marca, combustível e faixa de preço.">
+  <meta name="keywords" content="carros seminovos, JScar, comprar carro, financiamento de veículos, estoque">
+  <meta name="author" content="JScar">
+  <link rel="canonical" href="http://localhost:5500/estoque/estoque.html">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="JScar">
+  <meta property="og:title" content="Estoque — JScar Seminovos">
+  <meta property="og:description" content="Encontre seu próximo carro na JScar. Estoque selecionado, financiamento facilitado e atendimento rápido via WhatsApp.">
+  <meta property="og:image" content="http://localhost:5500/assets/og-image.jpg">
+  <meta property="og:url" content="http://localhost:5500/estoque/estoque.html">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Estoque — JScar Seminovos">
+  <meta name="twitter:description" content="Encontre seu próximo carro na JScar.">
+  <meta name="twitter:image" content="http://localhost:5500/assets/og-image.jpg">
+  <title>Estoque | JScar</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="estoque.css">
+  <script src="../js/toast.js" defer></script>
+</head>
+<body>
+
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="/frontend/index.html" class="brand" aria-label="JScar Veiculos">
+        <img src="../imagens/jscar-logo.png" alt="JScar Veiculos" class="brand-logo">
+      </a>
+      <nav class="nav" id="nav" role="navigation" aria-label="Menu principal">
+        <ul class="nav-list">
+          <li><a href="../index.html" class="nav-link">Início</a></li>
+          <li><a href="estoque.html" class="nav-link active">Estoque</a></li>
+          <li><a href="../index.html#porque" class="nav-link">Por que JScar</a></li>
+          <li><a href="../index.html#localizacao" class="nav-link">Localização</a></li>
+          <li><a href="../index.html#contato" class="nav-link">Contato</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="https://www.instagram.com/js_carpi/" target="_blank" rel="noopener" class="header-icon" aria-label="Instagram JScar">
+          <i class="bi bi-instagram"></i>
+        </a>
+        <a href="https://wa.me/5586994133034?text=Ol%C3%A1!%20Quero%20atendimento%20da%20JScar." target="_blank" rel="noopener" class="btn-whatsapp-header" aria-label="WhatsApp JScar">
+          <i class="bi bi-whatsapp"></i><span>WhatsApp</span>
+        </a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro">
+          <i class="bi bi-moon-fill" id="themeIcon"></i>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-overlay" id="mobileNavOverlay"></div>
+
+  <main>
+    <section class="estoque-hero">
+      <div class="container">
+        <div class="estoque-hero-inner reveal">
+          <div>
+            <h1 class="page-title">Nosso <span class="text-primary">Estoque</span></h1>
+            <p class="page-sub">Veículos avaliados, com procedência e prontos para entrega.</p>
+          </div>
+          <div class="estoque-search">
+            <div class="search-box">
+              <i class="bi bi-search search-icon" aria-hidden="true"></i>
+              <input type="text" id="searchInput" placeholder="Buscar por marca, modelo ou título..." aria-label="Buscar veículos">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="estoque-body section-pad">
+      <div class="container">
+        <div class="estoque-layout">
+
+          <!-- Filtros -->
+          <aside class="filters-panel reveal" aria-label="Filtros de busca">
+            <div class="filters-header">
+              <h2 class="filters-title"><i class="bi bi-sliders" aria-hidden="true"></i> Filtros</h2>
+              <button class="filters-clear" id="clearFilters" aria-label="Limpar filtros">Limpar</button>
+            </div>
+
+            <div class="filter-group">
+              <label for="marcaFilter" class="filter-label">Marca</label>
+              <select id="marcaFilter" class="filter-select" aria-label="Filtrar por marca">
+                <option value="">Todas as marcas</option>
+                <option>Chevrolet</option>
+                <option>Fiat</option>
+                <option>Ford</option>
+                <option>Honda</option>
+                <option>Hyundai</option>
+                <option>Jeep</option>
+                <option>Nissan</option>
+                <option>Renault</option>
+                <option>Toyota</option>
+                <option>Volkswagen</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="combustivelFilter" class="filter-label">Combustível</label>
+              <select id="combustivelFilter" class="filter-select" aria-label="Filtrar por combustível">
+                <option value="">Todos</option>
+                <option>Flex</option>
+                <option>Gasolina</option>
+                <option>Diesel</option>
+                <option>Elétrico</option>
+                <option>Híbrido</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filterCategoria" class="filter-label">Categoria</label>
+              <select id="filterCategoria" class="filter-select" aria-label="Filtrar por categoria">
+                <option value="">Todas</option>
+                <option value="hatch">Hatch</option>
+                <option value="sedan">Sedan</option>
+                <option value="suv">SUV</option>
+                <option value="picape">Picape</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="precoFilter" class="filter-label">Faixa de preço</label>
+              <select id="precoFilter" class="filter-select" aria-label="Filtrar por faixa de preço">
+                <option value="">Qualquer preço</option>
+                <option value="0-80000">Até R$ 80.000</option>
+                <option value="80000-120000">R$ 80k – R$ 120k</option>
+                <option value="120000-180000">R$ 120k – R$ 180k</option>
+                <option value="180000-99999999">Acima de R$ 180k</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="ordenacaoFilter" class="filter-label">Ordenar por</label>
+              <select id="ordenacaoFilter" class="filter-select" aria-label="Ordenar resultados">
+                <option value="">Mais recentes</option>
+                <option value="preco_asc">Menor preço</option>
+                <option value="preco_desc">Maior preço</option>
+                <option value="km_asc">Menor km</option>
+                <option value="ano_desc">Mais novo</option>
+              </select>
+            </div>
+          </aside>
+
+          <!-- Resultados -->
+          <div class="results-area">
+            <div class="results-header">
+              <p class="results-count" id="resultsCount" aria-live="polite">Carregando...</p>
+            </div>
+            <div class="vehicles-grid" id="estoqueGrid">
+              <div class="loading-state">
+                <i class="bi bi-arrow-repeat spin" aria-hidden="true"></i>
+                <span>Carregando veículos...</span>
+              </div>
+            </div>
+            <button class="btn-outline load-more-btn" id="loadMoreBtn" style="display:none">Carregar mais</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="/frontend/index.html" class="brand" aria-label="JScar Veiculos">
+        <img src="../imagens/jscar-logo.png" alt="JScar Veiculos" class="brand-logo">
+      </a>
+        <p class="footer-desc">Compra, venda, troca e financiamento de seminovos em Teresina–PI.</p>
+      </div>
+      <nav class="footer-links" aria-label="Links rápidos">
+        <strong>Links rápidos</strong>
+        <ul>
+          <li><a href="../index.html">Início</a></li>
+          <li><a href="estoque.html">Estoque</a></li>
+          <li><a href="../index.html#porque">Por que JScar</a></li>
+          <li><a href="../index.html#localizacao">Localização</a></li>
+          <li><a href="../index.html#contato">Contato</a></li>
+        </ul>
+      </nav>
+      <div class="footer-social">
+        <strong>Redes sociais</strong>
+        <div class="social-links">
+          <a href="https://www.instagram.com/js_carpi/" target="_blank" rel="noopener" aria-label="Instagram JScar">
+            <i class="bi bi-instagram" aria-hidden="true"></i>
+          </a>
+          <a href="https://wa.me/5586994133034" target="_blank" rel="noopener" aria-label="WhatsApp JScar">
+            <i class="bi bi-whatsapp" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2025 JScar Veículos. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/5586994133034?text=Ol%C3%A1!%20Quero%20atendimento%20da%20JScar." target="_blank" rel="noopener" class="wa-float" aria-label="WhatsApp JScar">
+    <i class="bi bi-whatsapp" aria-hidden="true"></i>
+  </a>
+
+  <script src="estoque.js"></script>
+</body>
+</html>

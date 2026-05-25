@@ -1,0 +1,602 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin — JScar</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="brand" target="_blank" rel="noopener" aria-label="JScar Veiculos">
+        <img src="../imagens/jscar-logo.png" alt="JScar Veiculos" class="brand-logo">
+      </a>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Fechar menu">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="sidebar-link active" data-section="dashboard">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </button>
+      <button class="sidebar-link" data-section="veiculos">
+        <i class="bi bi-car-front"></i> Veículos
+      </button>
+      <button class="sidebar-link" id="sidebarAddBtn">
+        <i class="bi bi-plus-circle"></i> Adicionar Veículo
+      </button>
+      <button class="sidebar-link" data-section="categorias">
+        <i class="bi bi-tags"></i> Categorias
+      </button>
+      <button class="sidebar-link" data-section="config">
+        <i class="bi bi-gear"></i> Configurações
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <i class="bi bi-person-circle"></i>
+        <span id="sidebarUserName">Admin</span>
+      </div>
+      <button class="btn-logout" id="logoutBtn">
+        <i class="bi bi-box-arrow-right"></i> Sair
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <div class="admin-main" id="adminMain">
+
+    <!-- Topbar -->
+    <header class="admin-topbar">
+      <button class="topbar-toggle" id="topbarToggle" aria-label="Abrir menu">
+        <i class="bi bi-list"></i>
+      </button>
+      <h1 class="topbar-title" id="topbarTitle">Dashboard</h1>
+      <button class="btn-primary topbar-add-btn" id="topbarAddBtn">
+        <i class="bi bi-plus-lg"></i> Adicionar Veículo
+      </button>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- ── Dashboard ── -->
+      <section class="admin-section active" id="sec-dashboard">
+        <div class="stat-cards" id="dashStats">
+          <div class="stat-card">
+            <div class="stat-card-icon"><i class="bi bi-car-front"></i></div>
+            <div class="stat-card-body">
+              <div class="stat-card-num" id="statTotal">—</div>
+              <div class="stat-card-label">Total de veículos</div>
+            </div>
+          </div>
+          <div class="stat-card stat-card--primary">
+            <div class="stat-card-icon"><i class="bi bi-star-fill"></i></div>
+            <div class="stat-card-body">
+              <div class="stat-card-num" id="statDestaques">—</div>
+              <div class="stat-card-label">Em destaque</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon"><i class="bi bi-tag"></i></div>
+            <div class="stat-card-body">
+              <div class="stat-card-num" id="statDisponiveis">—</div>
+              <div class="stat-card-label">Disponíveis</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon"><i class="bi bi-calendar-plus"></i></div>
+            <div class="stat-card-body">
+              <div class="stat-card-num" id="statVendidos">—</div>
+              <div class="stat-card-label">Vendidos</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-section-title">Últimos veículos adicionados</div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="dashRecentTable">
+            <thead>
+              <tr>
+                <th>Foto</th><th>Título</th><th>Marca</th><th>Preço</th><th>Destaque</th><th>Data</th>
+              </tr>
+            </thead>
+            <tbody id="dashRecentBody">
+              <tr><td colspan="6" class="table-empty">Carregando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Veículos ── -->
+      <section class="admin-section" id="sec-veiculos">
+        <div class="vehicles-toolbar">
+          <div class="toolbar-filters">
+            <div class="search-wrap">
+              <i class="bi bi-search"></i>
+              <input type="search" id="tblSearch" placeholder="Buscar veículo..." autocomplete="off">
+            </div>
+            <select id="tblMarca">
+              <option value="">Todas as marcas</option>
+              <option>VW</option><option>Fiat</option><option>Chevrolet</option>
+              <option>Toyota</option><option>Honda</option><option>Hyundai</option>
+              <option>Renault</option><option>Jeep</option><option>Ford</option>
+              <option>Nissan</option><option>Mitsubishi</option>
+            </select>
+            <select id="tblCategoria">
+              <option value="">Todas as categorias</option>
+              <option value="hatch">Hatch</option><option value="sedan">Sedan</option>
+              <option value="suv">SUV</option><option value="picape">Picape</option>
+            </select>
+          </div>
+          <button class="btn-primary" id="tblAddBtn">
+            <i class="bi bi-plus-lg"></i> Adicionar
+          </button>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="vehiclesTable">
+            <thead>
+              <tr>
+                <th>Foto</th><th>Título</th><th>Ano</th><th>Preço</th>
+                <th>Categoria</th><th>Status</th><th>Destaque</th><th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="vehiclesBody">
+              <tr><td colspan="8" class="table-empty">Carregando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-pagination" id="tablePagination"></div>
+      </section>
+
+      <!-- ── Categorias ── -->
+      <section class="admin-section" id="sec-categorias">
+        <div class="category-admin-head">
+          <div>
+            <h2 class="category-admin-title">Categorias</h2>
+            <p class="category-admin-sub">Gerencie capas, ordem e disponibilidade das categorias do site.</p>
+          </div>
+          <button class="btn-primary" id="categoryAddBtn" type="button">
+            <i class="bi bi-plus-lg"></i> Adicionar categoria
+          </button>
+        </div>
+        <div class="category-admin-grid" id="categoryAdminGrid">
+          <div class="table-empty">Carregando categorias...</div>
+        </div>
+      </section>
+
+      <!-- ── Configurações ── -->
+      <section class="admin-section" id="sec-config">
+        <div class="config-grid">
+
+          <div class="config-card">
+            <h2 class="config-card-title"><i class="bi bi-shop"></i> Dados da loja</h2>
+            <div id="configError" class="admin-alert admin-alert--error" style="display:none"></div>
+            <div id="configSuccess" class="admin-alert admin-alert--success" style="display:none"></div>
+            <div class="form-group">
+              <label>Nome da loja</label>
+              <input type="text" id="cfgNome" placeholder="JScar Veículos">
+            </div>
+            <div class="form-group">
+              <label>WhatsApp principal</label>
+              <input type="text" id="cfgWhatsapp" placeholder="5586994133034">
+            </div>
+            <div class="form-group">
+              <label>Instagram (URL completa)</label>
+              <input type="url" id="cfgInstagram" placeholder="https://www.instagram.com/js_carpi/">
+            </div>
+            <div class="form-group">
+              <label>Endereço</label>
+              <input type="text" id="cfgEndereco" placeholder="Av. Frei Serafim, 2300">
+            </div>
+            <div class="form-group">
+              <label>Cidade</label>
+              <input type="text" id="cfgCidade" placeholder="Teresina–PI">
+            </div>
+            <button class="btn-primary" id="cfgSaveBtn">
+              <span class="btn-text">Salvar dados</span>
+              <span class="btn-spinner" style="display:none"><i class="bi bi-arrow-repeat spin"></i></span>
+            </button>
+          </div>
+
+          <div class="config-card">
+            <h2 class="config-card-title"><i class="bi bi-lock"></i> Alterar senha</h2>
+            <div id="pwError" class="admin-alert admin-alert--error" style="display:none"></div>
+            <div id="pwSuccess" class="admin-alert admin-alert--success" style="display:none"></div>
+            <div class="form-group">
+              <label>Senha atual</label>
+              <div class="input-icon-right">
+                <input type="password" id="pwCurrent" placeholder="••••••••" autocomplete="current-password">
+                <button type="button" class="toggle-pw" data-target="pwCurrent" aria-label="Mostrar senha">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Nova senha</label>
+              <div class="input-icon-right">
+                <input type="password" id="pwNew" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+                <button type="button" class="toggle-pw" data-target="pwNew" aria-label="Mostrar senha">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Confirmar nova senha</label>
+              <input type="password" id="pwConfirm" placeholder="Repita a senha" autocomplete="new-password">
+            </div>
+            <button class="btn-primary" id="pwSaveBtn">
+              <span class="btn-text">Alterar senha</span>
+              <span class="btn-spinner" style="display:none"><i class="bi bi-arrow-repeat spin"></i></span>
+            </button>
+          </div>
+
+          <div class="config-card" hidden>
+            <div class="config-card-title">
+              <i class="bi bi-tag-fill"></i>
+              Categorias de Veículos
+            </div>
+            <p class="config-desc">
+              Gerencie as categorias exibidas no site. Aparecem na home e nos filtros do estoque.
+            </p>
+
+            <div class="categorias-manager">
+              <div class="categorias-lista" id="categoriasLista"></div>
+
+              <div class="categoria-add-row">
+                <div class="categoria-input-wrap">
+                  <i class="bi bi-plus-lg"></i>
+                  <input
+                    type="text"
+                    id="categoriasInput"
+                    placeholder="Nova categoria..."
+                    autocomplete="off"
+                    maxlength="30"
+                  />
+                </div>
+                <button class="btn-add-categoria" id="btnAddCategoria" type="button">
+                  Adicionar
+                </button>
+              </div>
+            </div>
+
+            <div class="config-actions">
+              <button class="btn-save-config" id="btnSalvarCategorias" type="button">
+                <i class="bi bi-check-lg"></i>
+                Salvar categorias
+              </button>
+            </div>
+          </div>
+
+          <div class="config-card">
+            <h3><span aria-hidden="true">Pin</span> Google Maps</h3>
+            <p class="config-desc">Cole a URL de incorporacao do Google Maps para exibir no mapa da secao Localizacao.</p>
+
+            <div class="form-group">
+              <label>URL de incorporacao (embed)</label>
+              <textarea
+                id="mapsEmbedUrl"
+                rows="3"
+                placeholder="Cole aqui o src do iframe do Google Maps. Ex: https://www.google.com/maps/embed?pb=..."
+              ></textarea>
+              <small class="form-hint">
+                Para obter: acesse Google Maps, pesquise o endereco, clique em Compartilhar, Incorporar um mapa e copie apenas o valor do src do iframe.
+              </small>
+            </div>
+
+            <div id="mapsPreview" class="maps-preview" style="display:none;">
+              <p class="preview-label">Pre-visualizacao:</p>
+              <iframe id="mapsPreviewFrame" width="100%" height="200" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+
+            <div style="display:flex; gap:12px; margin-top:16px;">
+              <button class="btn-secondary-config" id="btnPreviewMaps" type="button">
+                Visualizar
+              </button>
+              <button class="btn-save-config" id="btnSalvarMaps" type="button">
+                Salvar mapa
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       Vehicle Modal
+  ══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="vehicleModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalHeading">Adicionar Veículo</h2>
+        <button class="modal-close" id="modalClose" aria-label="Fechar">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody">
+
+        <div id="vehicleFormError" class="admin-alert admin-alert--error" style="display:none"></div>
+
+        <form id="vehicleForm" novalidate>
+
+          <!-- Row 1: Título -->
+          <div class="form-group">
+            <label>Título <span class="req">*</span></label>
+            <input type="text" id="f-titulo" placeholder="Ex: VW Gol 1.0 2020" required>
+          </div>
+
+          <!-- Row 2: Marca + Modelo -->
+          <div class="form-row">
+            <div class="form-group">
+              <label>Marca <span class="req">*</span></label>
+              <input type="text" id="f-marca" list="marcasList" placeholder="Ex: VW" required>
+              <datalist id="marcasList">
+                <option>VW</option><option>Fiat</option><option>Chevrolet</option>
+                <option>Toyota</option><option>Honda</option><option>Hyundai</option>
+                <option>Renault</option><option>Jeep</option><option>Ford</option>
+                <option>Nissan</option><option>Mitsubishi</option><option>Outras</option>
+              </datalist>
+            </div>
+            <div class="form-group">
+              <label>Modelo <span class="req">*</span></label>
+              <input type="text" id="f-modelo" placeholder="Ex: Gol" required>
+            </div>
+          </div>
+
+          <!-- Row 3: Ano + Combustível + Câmbio -->
+          <div class="form-row form-row--3">
+            <div class="form-group">
+              <label>Ano <span class="req">*</span></label>
+              <input type="number" id="f-ano" placeholder="2020" min="1990" max="2030" required>
+            </div>
+            <div class="form-group">
+              <label>Combustível <span class="req">*</span></label>
+              <select id="f-combustivel" required>
+                <option value="">Selecione</option>
+                <option>Flex</option><option>Gasolina</option><option>Diesel</option>
+                <option>Elétrico</option><option>Híbrido</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Câmbio</label>
+              <select id="f-cambio">
+                <option value="">Selecione</option>
+                <option>Manual</option><option>Automático</option><option>CVT</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 4: KM + Preço -->
+          <div class="form-row">
+            <div class="form-group">
+              <label>Quilometragem <span class="req">*</span></label>
+              <input type="text" id="f-km" placeholder="Ex: 45000" required>
+            </div>
+            <div class="form-group">
+              <label>Preço <span class="req">*</span></label>
+              <input type="text" id="f-preco" placeholder="R$ 0,00" required>
+            </div>
+          </div>
+
+          <!-- Row 5: Cidade + Cor + Categoria -->
+          <div class="form-row form-row--3">
+            <div class="form-group">
+              <label>Cidade</label>
+              <input type="text" id="f-cidade" placeholder="Teresina">
+            </div>
+            <div class="form-group">
+              <label>Cor</label>
+              <input type="text" id="f-cor" placeholder="Prata">
+            </div>
+            <div class="form-group">
+              <label>Categoria</label>
+              <select id="f-categoria">
+                <option value="">Selecione</option>
+                <option value="hatch">Hatch</option><option value="sedan">Sedan</option>
+                <option value="suv">SUV</option><option value="picape">Picape</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select id="f-status">
+                <option value="disponivel">Disponível</option>
+                <option value="reservado">Reservado</option>
+                <option value="vendido">Vendido</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 6: WhatsApp -->
+          <div class="form-group">
+            <label>WhatsApp do veículo (opcional)</label>
+            <input type="text" id="f-whatsapp" placeholder="5586994133034 (deixe em branco para usar o padrão)">
+          </div>
+
+          <!-- Row 7: Descrição -->
+          <div class="form-group">
+            <label>Descrição</label>
+            <textarea id="f-descricao" rows="3" placeholder="Detalhes adicionais do veículo..."></textarea>
+          </div>
+
+          <div class="checkbox-group">
+            <label class="checkbox-card" for="vehicleDestaque">
+              <input type="checkbox" id="vehicleDestaque" name="destaque">
+              <div class="checkbox-card-inner">
+                <i class="bi bi-star-fill"></i>
+                <div>
+                  <strong>Marcar como destaque</strong>
+                  <span>Aparece na seção de destaques da home</span>
+                </div>
+              </div>
+              <div class="checkbox-indicator"></div>
+            </label>
+
+            <label class="checkbox-card" for="vehicleHero">
+              <input type="checkbox" id="vehicleHero" name="hero">
+              <div class="checkbox-card-inner">
+                <i class="bi bi-houses-fill"></i>
+                <div>
+                  <strong>Exibir na capa da home</strong>
+                  <span>Apenas um veículo por vez. O anterior é substituído automaticamente.</span>
+                </div>
+              </div>
+              <div class="checkbox-indicator"></div>
+            </label>
+          </div>
+
+          <!-- Opcionais -->
+          <div class="form-group">
+            <label>Opcionais</label>
+            <div class="tags-input-container" id="opcionaisContainer">
+              <div class="tags-list" id="opcionaisTags"></div>
+              <input
+                type="text"
+                id="opcionaisInput"
+                placeholder="Digite um opcional e pressione Enter ou virgula..."
+                autocomplete="off"
+              >
+            </div>
+            <small class="form-hint">Pressione Enter ou virgula para adicionar. Clique no X para remover.</small>
+          </div>
+
+
+          <!-- Imagens -->
+          <div class="form-section-title">Fotos <span style="font-weight:400;color:var(--muted);font-size:.8rem">(máx. 15 — arraste para reordenar)</span></div>
+          <div class="img-drop-zone" id="imgDropZone" role="button" tabindex="0" aria-label="Clique ou arraste fotos aqui">
+            <i class="bi bi-cloud-arrow-up"></i>
+            <span>Clique ou arraste fotos aqui</span>
+            <span class="drop-hint">JPG, PNG ou WebP · até 15 MB cada</span>
+            <input type="file" id="imgFileInput" accept=".jpg,.jpeg,.png,.webp" multiple style="display:none">
+          </div>
+          <div class="img-preview-grid" id="imgPreviewGrid"></div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" id="modalCancelBtn">Cancelar</button>
+        <button class="btn-primary" id="modalSaveBtn">
+          <span class="btn-text">Salvar veículo</span>
+          <span class="btn-spinner" style="display:none"><i class="bi bi-arrow-repeat spin"></i></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       Category Modal
+  ══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="categoryModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="categoryModalHeading">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h2 class="modal-title" id="categoryModalHeading">Adicionar categoria</h2>
+        <button class="modal-close" id="categoryModalClose" aria-label="Fechar">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="categoryFormError" class="admin-alert admin-alert--error" style="display:none"></div>
+        <form id="categoryForm" class="category-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome <span class="req">*</span></label>
+              <input type="text" id="cat-name" placeholder="Ex: SUV" required>
+            </div>
+            <div class="form-group">
+              <label>Slug <span class="req">*</span></label>
+              <input type="text" id="cat-slug" placeholder="suv" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Descrição curta</label>
+            <input type="text" id="cat-description" placeholder="Espaço, presença e conforto" maxlength="120">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Ícone opcional</label>
+              <input type="text" id="cat-icon" placeholder="bi-truck-front-fill">
+            </div>
+            <div class="form-group">
+              <label>Ordem</label>
+              <input type="number" id="cat-sort" min="0" step="1" value="0">
+            </div>
+          </div>
+          <label class="checkbox-card category-active-card" for="cat-active">
+            <input type="checkbox" id="cat-active" checked>
+            <div class="checkbox-card-inner">
+              <i class="bi bi-eye-fill"></i>
+              <div>
+                <strong>Categoria ativa</strong>
+                <span>Aparece na Home, filtros e cadastro de veículos</span>
+              </div>
+            </div>
+            <div class="checkbox-indicator"></div>
+          </label>
+          <div class="form-group">
+            <label>Imagem de capa</label>
+            <div class="category-upload">
+              <div class="category-preview" id="cat-preview">
+                <i class="bi bi-image"></i>
+                <span>Prévia</span>
+              </div>
+              <label class="category-upload-btn" for="cat-image">
+                <i class="bi bi-cloud-arrow-up"></i>
+                <span>Enviar imagem</span>
+              </label>
+              <input type="file" id="cat-image" accept=".jpg,.jpeg,.png,.webp" hidden>
+            </div>
+            <small class="form-hint">JPG, PNG ou WebP até 5 MB. A imagem será exibida como capa do card.</small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" id="categoryCancelBtn" type="button">Cancelar</button>
+        <button class="btn-primary" id="categorySaveBtn" type="button">
+          <span class="btn-text">Salvar categoria</span>
+          <span class="btn-spinner" style="display:none"><i class="bi bi-arrow-repeat spin"></i></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       Confirm Modal
+  ══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="confirmModal" style="display:none" role="dialog" aria-modal="true">
+    <div class="modal-box modal-sm">
+      <div class="modal-header">
+        <h2 class="modal-title" id="confirmTitle">Confirmar</h2>
+        <button class="modal-close" id="confirmClose" aria-label="Fechar"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" id="confirmNo">Cancelar</button>
+        <button class="btn-danger" id="confirmYes">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
