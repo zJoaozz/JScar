@@ -139,7 +139,18 @@ function renderDescricao(v) {
 }
 
 function renderActions(v) {
-  document.getElementById('btnWhatsapp').href = buildWhatsappLink(v);
+  const btnWa = document.getElementById('btnWhatsapp');
+  if (String(v.status || '').toLowerCase() === 'vendido') {
+    btnWa.removeAttribute('href');
+    btnWa.removeAttribute('target');
+    btnWa.removeAttribute('rel');
+    btnWa.className = 'btn-interest btn-interest-vendido';
+    btnWa.setAttribute('aria-disabled', 'true');
+    btnWa.setAttribute('tabindex', '-1');
+    btnWa.innerHTML = '<i class="bi bi-x-circle" aria-hidden="true"></i> Veículo Vendido';
+  } else {
+    btnWa.href = buildWhatsappLink(v);
+  }
   document.getElementById('btnShare').onclick = shareVehicle;
 }
 

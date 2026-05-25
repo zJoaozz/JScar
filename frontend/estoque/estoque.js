@@ -135,11 +135,12 @@ async function loadSettings() {
 
 function buildCard(v) {
   const id = v.id || v._id;
+  const sold = String(v.status || '').toLowerCase() === 'vendido';
   const statusBadge = v.status && v.status !== 'disponivel' ? `<span class="badge-status ${escHtml(v.status)}">${labelStatus(v.status)}</span>` : '';
-  const whatsappLink = buildWhatsappLink(v);
+  const waBtn = sold ? '' : `<a class="btn-wa" href="${escHtml(buildWhatsappLink(v))}" target="_blank" rel="noopener" aria-label="Chamar no WhatsApp"><i class="bi bi-whatsapp"></i></a>`;
   return `<article class="vehicle-card">
     <div class="card-img-link">${statusBadge}<a href="../veiculo/veiculo.html?id=${escHtml(id)}"><img class="card-img" src="${escHtml(getImageUrl(v))}" alt="${escHtml(v.titulo)}" loading="lazy"></a></div>
-    <div class="card-body"><h3 class="card-title">${escHtml(v.titulo)}</h3><div class="card-specs"><span><i class="bi bi-calendar3"></i>${escHtml(v.ano)}</span><span><i class="bi bi-speedometer2"></i>${escHtml(v.km)}</span><span><i class="bi bi-fuel-pump"></i>${escHtml(v.combustivel)}</span></div><div class="card-price">${formatPreco(v.preco)}</div><div class="card-actions"><a class="btn-wa" href="${escHtml(whatsappLink)}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i></a><a class="btn-details" href="../veiculo/veiculo.html?id=${escHtml(id)}">Ver detalhes</a></div></div>
+    <div class="card-body"><h3 class="card-title">${escHtml(v.titulo)}</h3><div class="card-specs"><span><i class="bi bi-calendar3"></i>${escHtml(v.ano)}</span><span><i class="bi bi-speedometer2"></i>${escHtml(v.km)}</span><span><i class="bi bi-fuel-pump"></i>${escHtml(v.combustivel)}</span></div><div class="card-price">${formatPreco(v.preco)}</div><div class="card-actions">${waBtn}<a class="btn-details" href="../veiculo/veiculo.html?id=${escHtml(id)}">Ver detalhes</a></div></div>
   </article>`;
 }
 
