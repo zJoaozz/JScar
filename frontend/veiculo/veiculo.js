@@ -249,12 +249,14 @@ function showFeedback(message) {
 
 async function loadOutros(v) {
   const grid = document.getElementById('outrosGrid');
-  const vId = v.id || v._id;
+  const vId = String(v.id || v._id || '');
 
   try {
-    const res = await fetch(`${API_URL}/vehicles?categoria=${encodeURIComponent(v.categoria || '')}&limit=4`);
+    const res = await fetch(`${API_URL}/vehicles?limit=10`);
     const json = await res.json();
-    const others = (json.data || []).filter((item) => (item.id || item._id) !== vId).slice(0, 3);
+    const others = (json.data || [])
+      .filter((item) => String(item.id || item._id || '') !== vId)
+      .slice(0, 3);
     grid.innerHTML = others.length ? others.map(buildCard).join('') : '';
     initCardImages(grid);
   } catch (err) {
