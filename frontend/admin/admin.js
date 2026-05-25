@@ -921,7 +921,7 @@ function openVehicleModal(vehicle) {
   /* Populate if editing */
   if (vehicle) {
     const fields = ['titulo', 'marca', 'modelo', 'ano', 'combustivel', 'cambio',
-                    'km', 'preco', 'cidade', 'cor', 'categoria', 'status', 'whatsapp', 'descricao'];
+                    'km', 'preco', 'cidade', 'cor', 'categoria', 'status', 'descricao'];
     fields.forEach(f => {
       const el = document.getElementById(`f-${f}`);
       if (el) el.value = vehicle[f] ?? '';
@@ -995,7 +995,7 @@ async function saveVehicle() {
     const fd = new FormData();
 
     /* Text fields */
-    ['titulo','marca','modelo','ano','combustivel','cambio','km','preco','cidade','cor','categoria','status','whatsapp','descricao'].forEach(f => {
+    ['titulo','marca','modelo','ano','combustivel','cambio','km','preco','cidade','cor','categoria','status','descricao'].forEach(f => {
       const el = document.getElementById(`f-${f}`);
       if (el) fd.append(f, el.value.trim());
     });
