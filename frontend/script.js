@@ -296,19 +296,51 @@ async function loadSettings() {
   try {
     const res = await fetch(`${API_URL}/settings`);
     const settings = await res.json();
-    if (res.ok && settings.whatsapp) {
+    if (!res.ok) return;
+
+    const phone = normalizePhone(settings.whatsapp);
+    if (phone) {
       storeWhatsapp = settings.whatsapp;
-      const phone = normalizePhone(settings.whatsapp);
-      if (phone) {
-        const msg = encodeURIComponent('Olá! Quero atendimento da JScar.');
-        document.querySelectorAll('.wa-float, .whatsapp-float, .btn-whatsapp-header').forEach(el => {
-          if (el.tagName === 'A') el.href = `https://wa.me/${phone}?text=${msg}`;
-        });
-      }
+      document.querySelectorAll('[data-dynamic="wa"]').forEach(el => {
+        const msg = el.dataset.waMsg || 'Olá! Quero atendimento da JScar.';
+        el.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+      });
+      const formatted = formatPhone(phone);
+      const telEl = document.getElementById('locTelefone');
+      if (telEl) telEl.textContent = formatted;
+      const waTextEl = document.getElementById('contatoWaText');
+      if (waTextEl) waTextEl.textContent = formatted;
+    }
+
+    if (settings.instagram) {
+      document.querySelectorAll('[data-dynamic="ig"]').forEach(el => {
+        el.href = settings.instagram;
+      });
+      const handle = extractIgHandle(settings.instagram);
+      const igTextEl = document.getElementById('contatoIgText');
+      if (igTextEl && handle) igTextEl.textContent = `@${handle}`;
+    }
+
+    const address = [settings.endereco, settings.cidade].filter(Boolean).join(' — ');
+    if (address) {
+      const addrEl = document.getElementById('locEndereco');
+      if (addrEl) addrEl.textContent = address;
     }
   } catch {
     storeWhatsapp = WA;
   }
+}
+
+function formatPhone(digits) {
+  if (digits.length === 13) return `(${digits.slice(2, 4)}) ${digits.slice(4, 5)} ${digits.slice(5, 9)}-${digits.slice(9)}`;
+  if (digits.length === 11) return `(${digits.slice(0, 2)}) ${digits.slice(2, 3)} ${digits.slice(3, 7)}-${digits.slice(7)}`;
+  if (digits.length === 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return digits;
+}
+
+function extractIgHandle(url) {
+  const match = String(url || '').match(/instagram\.com\/([^/?#]+)/);
+  return match ? match[1] : null;
 }
 
 function initCardImages() {
