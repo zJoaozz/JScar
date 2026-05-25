@@ -1084,14 +1084,23 @@ async function loadConfig() {
   try {
     const settings = await api('/settings');
     if (!settings) return;
-    document.getElementById('cfgNome').value      = settings.nome      || '';
-    document.getElementById('cfgWhatsapp').value  = settings.whatsapp  || '';
-    document.getElementById('cfgInstagram').value = settings.instagram || '';
-    document.getElementById('cfgEndereco').value  = settings.endereco  || '';
-    document.getElementById('cfgCidade').value    = settings.cidade    || '';
+    applyConfig(settings);
   } catch (err) {
-    console.error(err);
+    console.error('[loadConfig]', err);
+    const errEl = document.getElementById('configError');
+    if (errEl) {
+      errEl.textContent = 'Erro ao carregar configurações: ' + err.message;
+      errEl.style.display = '';
+    }
   }
+}
+
+function applyConfig(settings) {
+  document.getElementById('cfgNome').value      = settings.nome      || '';
+  document.getElementById('cfgWhatsapp').value  = settings.whatsapp  || '';
+  document.getElementById('cfgInstagram').value = settings.instagram || '';
+  document.getElementById('cfgEndereco').value  = settings.endereco  || '';
+  document.getElementById('cfgCidade').value    = settings.cidade    || '';
 }
 
 function setConfigSaving(btnId, on) {
@@ -1110,16 +1119,17 @@ function setupConfig() {
     okEl.style.display  = 'none';
     setConfigSaving('cfgSaveBtn', true);
     try {
-      await api('/settings', {
+      const saved = await api('/settings', {
         method: 'PUT',
         json: {
-          nome:      document.getElementById('cfgNome').value,
-          whatsapp:  document.getElementById('cfgWhatsapp').value,
-          instagram: document.getElementById('cfgInstagram').value,
-          endereco:  document.getElementById('cfgEndereco').value,
-          cidade:    document.getElementById('cfgCidade').value,
+          nome:      document.getElementById('cfgNome').value.trim(),
+          whatsapp:  document.getElementById('cfgWhatsapp').value.trim(),
+          instagram: document.getElementById('cfgInstagram').value.trim(),
+          endereco:  document.getElementById('cfgEndereco').value.trim(),
+          cidade:    document.getElementById('cfgCidade').value.trim(),
         },
       });
+      if (saved) applyConfig(saved);
       okEl.textContent    = 'Dados salvos com sucesso.';
       okEl.style.display  = '';
       toast('Dados da loja atualizados.');
@@ -1198,4 +1208,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   initMapsConfig();
   await loadAdminCategories();
   loadDashboard();
+  loadConfig();
 });
