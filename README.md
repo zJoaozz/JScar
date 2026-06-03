@@ -142,7 +142,7 @@ Abra `frontend/index.html` com o Live Server na porta 5500.
 
 ## 👨‍💻 Desenvolvido por
 
-**TriCod3x** — Soluções em tecnologia
+**TriCod3x**
 
 ---
 
